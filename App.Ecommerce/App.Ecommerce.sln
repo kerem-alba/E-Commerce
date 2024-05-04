@@ -9,6 +9,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ViewTemplate", "..\ViewTemp
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "App.E-Commerce", "..\App.E-Commerce\App.E-Commerce.csproj", "{D42B73A4-D7CC-42C2-A426-5A4BE7AE463C}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "App.Data", "..\App.Data\App.Data.csproj", "{DD920326-ADDE-45F1-A016-34A8FAC00BD0}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -27,6 +29,10 @@ Global
 		{D42B73A4-D7CC-42C2-A426-5A4BE7AE463C}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{D42B73A4-D7CC-42C2-A426-5A4BE7AE463C}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{D42B73A4-D7CC-42C2-A426-5A4BE7AE463C}.Release|Any CPU.Build.0 = Release|Any CPU
+		{DD920326-ADDE-45F1-A016-34A8FAC00BD0}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{DD920326-ADDE-45F1-A016-34A8FAC00BD0}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{DD920326-ADDE-45F1-A016-34A8FAC00BD0}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{DD920326-ADDE-45F1-A016-34A8FAC00BD0}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
