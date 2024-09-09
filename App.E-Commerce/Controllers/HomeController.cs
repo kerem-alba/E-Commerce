@@ -1,40 +1,93 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using App.Eticaret.Models.ViewModels;
+using App.Models.DTO.ContactForm;
+using Microsoft.AspNetCore.Mvc;
 
-namespace App.Ecommerce.Controllers
+namespace App.Eticaret.Controllers
 {
-    public class HomeController : Controller
+    public class HomeController(IHttpClientFactory clientFactory) : BaseController
     {
+        private HttpClient Client => clientFactory.CreateClient("Api.Data");
+
         public IActionResult Index()
         {
             return View();
         }
 
-        [Route("/about-us")]
-        [HttpGet]
+        [HttpGet("/about-us")]
         public IActionResult AboutUs()
         {
             return View();
         }
 
-        [Route("/contact")]
-        [HttpGet]
+        [HttpGet("/contact")]
         public IActionResult Contact()
         {
             return View();
         }
 
-        [Route("/product/list")]
-        [HttpGet]
-        public IActionResult Listing()
+        [HttpPost("/contact")]
+        public async Task<IActionResult> Contact([FromForm] NewContactFormMessageViewModel newContactMessage)
         {
+            if (!ModelState.IsValid)
+            {
+                return View(newContactMessage);
+            }
+
+            var contactMessageEntity = new ContactFormCreateRequest
+            {
+                Name = newContactMessage.Name,
+                Email = newContactMessage.Email,
+                Message = newContactMessage.Message,
+            };
+
+            var response = await Client.PostAsJsonAsync("/contact-form", contactMessageEntity);
+
+            if (!response.IsSuccessStatusCode)
+            {
+                ViewBag.ErrorMessage = "An error occurred while sending your message. Please try again later.";
+                return View(newContactMessage);
+            }
+
+            SetSuccessMessage("Your message has been sent successfully.");
+
             return View();
         }
 
-        [Route("/product/{productId:int}/details")]
-        [HttpGet]
-        public IActionResult ProductDetail([FromRoute] int productId)
+        [HttpGet("/product/list")]
+        public async Task<IActionResult> Listing()
         {
-            return View();
+            // TODO: add paging support
+
+            var response = await Client.GetAsync("/products");
+
+            if (!response.IsSuccessStatusCode)
+            {
+                return NotFound();
+            }
+
+            var products = await response.Content.ReadFromJsonAsync<List<ProductListingViewModel>>();
+
+            return View(products);
+        }
+
+        [HttpGet("/product/{productId:int}/details")]
+        public async Task<IActionResult> ProductDetail([FromRoute] int productId)
+        {
+            var response = await Client.GetAsync($"/products/{productId}/home");
+
+            if (!response.IsSuccessStatusCode)
+            {
+                return NotFound();
+            }
+
+            var product = await response.Content.ReadFromJsonAsync<HomeProductDetailViewModel>();
+
+            if (product is null)
+            {
+                return NotFound();
+            }
+
+            return View(product);
         }
     }
 }
